@@ -1,12 +1,13 @@
 from flask_restful import reqparse
 
 guest_parser = reqparse.RequestParser()
-guest_parser.add_argument("key", type=str, help="Key is required", required=False)
 guest_parser.add_argument('new_id', type=int, help='Room assigned to guest', required=False)
 guest_parser.add_argument('room_id', type=int, help='Room assigned to guest', required=False)
 guest_parser.add_argument('fname', type=str, help='First name of the guest', required=False)
 guest_parser.add_argument('lname', type=str, help='Last name of the guest', required=False)
 guest_parser.add_argument('email', type=str, help='Email of the guest', required=False)
+guest_parser.add_argument('phone', type=str, help='Phone number of the guest', required=False)
+guest_parser.add_argument('num_guest', type=int, help='Number of guests', required=False)
 guest_parser.add_argument('checkin', type=str , help='Checkin date of the guest', required=False)
 guest_parser.add_argument('checkout', type=str, help='Checkout date of the guest', required=False)
 
@@ -16,5 +17,23 @@ user_parser.add_argument('password', type=str, help='Password of the user', requ
 user_parser.add_argument('new_password', type=str, help='New password of the user', required=False)
 
 del_user_parser = reqparse.RequestParser()
-del_user_parser.add_argument('key', type=str, help='Key of the user', required=False)
 del_user_parser.add_argument('room_id', type=int, help='Room assigned to guest', required=False)
+
+bill_parser = reqparse.RequestParser()
+bill_parser.add_argument('room_id', type=int, help='Room assigned to guest', required=False)
+bill_parser.add_argument('amount', type=float, help='Amount of the bill', required=False)
+bill_parser.add_argument('biller', type=str, help='Biller of the bill', required=False)
+bill_parser.add_argument('date', type=str, help='Date of the bill', required=False)
+bill_parser.add_argument('bill_id', type=int, help='ID of the bill', required=False)
+
+room_parser = reqparse.RequestParser()
+room_parser.add_argument('room_id', type=int, help='Room assigned to guest', required=False)
+room_parser.add_argument('room_type', type=str, help='Type of the room', required=False)
+room_parser.add_argument('room_price', type=float, help='Price of the room', required=False)
+room_parser.add_argument('room_available', type=bool , help='Is the room available or under maintenance', required=False)
+room_parser.add_argument('number_of_beds', type=int, help='Number of beds in the room', required=False)
+room_parser.add_argument('mini_fridge', type=bool, help='Mini frige in the room', required=False)
+room_parser.add_argument('tv', type=bool, help='TV available in the room', required=False)
+room_parser.add_argument('ac', type=bool, help='AC available in the room', required=False)
+room_parser.add_argument('wifi', type=bool, help='Wifi access in the room', required=False)
+room_parser.add_argument('breakfast', type=bool, help='Free breakfast included in the room', required=False)

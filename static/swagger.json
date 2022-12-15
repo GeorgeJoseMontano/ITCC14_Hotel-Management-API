@@ -1,0 +1,1112 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.11",
+    "title": "Hotel Guest Management",
+    "description": "<insert description here>",
+    "contact": {
+      "email": "20200020326@my.xu.edu.ph"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Guests",
+      "description": "Operations regarding Parts"
+    },
+    {
+      "name": "Bills",
+      "description": "Operations regarding Parts"
+    },
+    {
+      "name": "Rooms",
+      "description": "Operations regarding Parts"
+    },
+    {
+      "name": "Users",
+      "description": "Operations regarding Parts"
+    }
+  ],
+  "paths": {
+    "/guest": {
+      "get": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Guests"
+        ],
+        "summary": "Get guest information",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "query",
+            "description": "Room Number of guest",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Guests"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Guests"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter/s entered"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "description": "Guest not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Guests"
+        ],
+        "summary": "Check in a new guest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Guests_Req"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Guests_Req"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Guests_Req"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Guest has been booked into room successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Guests"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Guests"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "description": "There was an error in booking the guest"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Guests"
+        ],
+        "summary": "Update guest information",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Guests_Move"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Guests_Move"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Guests_Move"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Guest moved to new room"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Guests"
+        ],
+        "summary": "Checks out a guest",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "query",
+            "description": "Pet id to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Guest checked out"
+          },
+          "400": {
+            "description": "Invalid key"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/guest/{room_id}": {
+      "get": {
+        "tags": [
+          "Guests"
+        ],
+        "summary": "Get guest information (public)",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "description": "Room Number of guest",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Guests"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Guests"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter/s entered"
+          },
+          "404": {
+            "description": "Part not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/bill/total": {
+      "get": {
+        "tags": [
+          "Bills"
+        ],
+        "summary": "Returns the total amount of all bills for a specific room",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "query",
+            "description": "Room Number of guest",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Total",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bills"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bills"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter/s entered"
+          },
+          "404": {
+            "description": "Part not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/bill/{room_id}": {
+      "get": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Bills"
+        ],
+        "summary": "Returns a list of all bills for a particular room",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "description": "Room Number of guest",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bills"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bills"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter/s entered"
+          },
+          "404": {
+            "description": "Part not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Bills"
+        ],
+        "summary": "Add a new bill to guest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bills_Req"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Bills_Req"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Bills_Req"
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "description": "Room Number of guest",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Bills"
+        ],
+        "summary": "Confirm payment of a bill",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "description": "Room id for bill to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "bill_id",
+            "in": "query",
+            "description": "Bill id for bill to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bill payment was successful"
+          },
+          "400": {
+            "description": "Invalid key"
+          }
+        }
+      }
+    },
+    "/room/{room_id}": {
+      "get": {
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Retrieve room information",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "description": "Room number of room",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rooms"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rooms"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter/s entered"
+          },
+          "404": {
+            "description": "Part not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/room": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Create a new room for the hotel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Rooms_Req"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Rooms_Req"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Rooms_Req"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Room created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rooms"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rooms"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Update room information",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Rooms_Req"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Rooms_Req"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Rooms_Req"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updating room details was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rooms"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rooms"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Change room status for maintenance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Rooms_Upd"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Rooms_Upd"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Rooms_Upd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rooms"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rooms"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/user/register": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Register a new user",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Password of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User registration successful"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Deletes all user information in database",
+        "responses": {
+          "200": {
+            "description": "All users deleted"
+          },
+          "400": {
+            "description": "Invalid key"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Register a new user",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Password of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully logged in"
+          },
+          "405": {
+            "description": "Incorrect password"
+          }
+        }
+      }
+    },
+    "/user": {
+      "patch": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Change password for user",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Password of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "new_password",
+            "in": "query",
+            "description": "New password of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Password updated"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete a user information in database",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Password of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid Vanue value"
+          },
+          "404": {
+            "description": "Part not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Guests": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 101
+          },
+          "fname": {
+            "type": "string",
+            "example": "George Jose"
+          },
+          "lname": {
+            "type": "string",
+            "example": "Montano"
+          },
+          "email": {
+            "type": "string",
+            "example": "email@email.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "123-4567"
+          },
+          "num_guest": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "checkin": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z"
+          },
+          "checkout": {
+            "type": "string",
+            "example": "2020-02-01T00:00:00.000Z"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1000
+          }
+        }
+      },
+      "Guests_Req": {
+        "type": "object",
+        "properties": {
+          "room_id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 101
+          },
+          "fname": {
+            "type": "string",
+            "example": "George Jose"
+          },
+          "lname": {
+            "type": "string",
+            "example": "Montano"
+          },
+          "email": {
+            "type": "string",
+            "example": "email@email.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "123-4567"
+          },
+          "num_guest": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "checkin": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z"
+          },
+          "checkout": {
+            "type": "string",
+            "example": "2020-02-01T00:00:00.000Z"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1000
+          }
+        }
+      },
+      "Guests_Move": {
+        "type": "object",
+        "properties": {
+          "room_id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 101
+          },
+          "new_id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 102
+          }
+        }
+      },
+      "Bills_Req": {
+        "type": "object",
+        "properties": {
+          "room_id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 101
+          },
+          "biller": {
+            "type": "string",
+            "example": "room"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1000
+          },
+          "date": {
+            "type": "string",
+            "example": "Dec 12, 2022"
+          }
+        }
+      },
+      "Bills": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "room_id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 101
+          },
+          "biller": {
+            "type": "string",
+            "example": "room"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1000
+          },
+          "date": {
+            "type": "string",
+            "example": "Dec 12, 2022"
+          }
+        }
+      },
+      "Rooms": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "room_type": {
+            "type": "string",
+            "example": "standard"
+          },
+          "room_price": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1000
+          },
+          "room_available": {
+            "type": "boolean",
+            "example": true
+          },
+          "number_of_beds": {
+            "type": "integer",
+            "format": "int64",
+            "example": 2
+          },
+          "mini_fridge": {
+            "type": "boolean",
+            "example": true
+          },
+          "tv": {
+            "type": "boolean",
+            "example": true
+          },
+          "ac": {
+            "type": "boolean",
+            "example": true
+          },
+          "wifi": {
+            "type": "boolean",
+            "example": true
+          },
+          "breakfast": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "Rooms_Req": {
+        "type": "object",
+        "properties": {
+          "room_id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "room_type": {
+            "type": "string",
+            "example": "standard"
+          },
+          "room_price": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1000
+          },
+          "room_available": {
+            "type": "boolean",
+            "example": true
+          },
+          "number_of_beds": {
+            "type": "integer",
+            "format": "int64",
+            "example": 2
+          },
+          "mini_fridge": {
+            "type": "boolean",
+            "example": true
+          },
+          "tv": {
+            "type": "boolean",
+            "example": true
+          },
+          "ac": {
+            "type": "boolean",
+            "example": true
+          },
+          "wifi": {
+            "type": "boolean",
+            "example": true
+          },
+          "breakfast": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "Rooms_Upd": {
+        "type": "object",
+        "properties": {
+          "room_status": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Authentication information is missing or invalid",
+        "headers": {
+          "WW_Authenticate": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
